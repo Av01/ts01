@@ -2,13 +2,15 @@ package tsp;
 
 import java.util.List;
 
+import data.Coordinate;
+
 public class SolverOut {
     List<Integer> order;
     double totaldistance;
     boolean showData = false;
-    List<List<Double>> coordinates;
+    List<Coordinate> coordinates;
     
-    public SolverOut(List<Integer> order, double totaldistance, boolean showData, List<List<Double>> coordinates) {
+    public SolverOut(List<Integer> order, double totaldistance, boolean showData, List<Coordinate> coordinates) {
         this.order = order;
         this.totaldistance = totaldistance;
         this.showData = showData;
@@ -36,11 +38,11 @@ public class SolverOut {
         this.showData = showData;
     }
 
-    public List<List<Double>> getCoordinates() {
+    public List<Coordinate> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(List<List<Double>> coordinates) {
+    public void setCoordinates(List<Coordinate> coordinates) {
         this.coordinates = coordinates;
     }
     

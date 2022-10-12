@@ -6,34 +6,37 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import data.Coordinate;
+
 public class RoutePlotterPanel extends JPanel{
-    private List<List<Integer>> coordinates = new ArrayList<>();
+    private List<Coordinate> coordinates = new ArrayList<>();
 
     
-    public List<List<Integer>> getCoordinates() {
+    public List<Coordinate> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(List<List<Integer>> coordinates) {
+    public void setCoordinates(List<Coordinate> coordinates) {
         this.coordinates = coordinates;
     }
 
     public RoutePlotterPanel() {
         super();
-        this.setSize(500,500);
     }
 
     @Override
     public void paint(Graphics g) {
         int x = this.getX() + 50;
         int y = this.getY() + 50;
-        List<Integer> lastCoordinates = null;
-        for (int i = 0; i < coordinates.size(); i++) {
-            List<Integer> coordinate = coordinates.get(i);
-            g.drawOval(coordinate.get(0) + x, coordinate.get(1) + y, 5, 5);
+        int width = this.getWidth();
+        int height = this.getHeight();
+        List<Coordinate> scaledCoordinates = Utils.scaleCoordinates(this.coordinates, width, height);
+        Coordinate lastCoordinates = null;
+        for (Coordinate coordinate : scaledCoordinates) {
+            g.drawOval((int)coordinate.x + x, (int)coordinate.y + y, 5, 5);
             if(lastCoordinates != null) {
-                g.drawLine(lastCoordinates.get(0) + x, lastCoordinates.get(1) + y
-                , coordinate.get(0) + x, coordinate.get(1) + y);
+                g.drawLine((int)lastCoordinates.x + x, (int)lastCoordinates.x + y
+                , (int)coordinate.x + x, (int)coordinate.y + y);
             }
             lastCoordinates = coordinate;
         }

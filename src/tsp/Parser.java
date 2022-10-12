@@ -3,10 +3,11 @@ package tsp;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import data.Coordinate;
 
 public class Parser {
     String typeField = "TYPE";
@@ -14,10 +15,15 @@ public class Parser {
     boolean isASymmetric; 
     String type = "UNK";
     int dimensions = 0;
-    List<List<Double>> data = new ArrayList<>();
-    
-    public List<List<Double>> getData() {
-        return data;
+    List<Coordinate> coordinates = new ArrayList<>();
+    double [][] distanceMatrix;
+
+    public void setCoordinates(List<Coordinate> coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public void setDistanceMatrix(double[][] distanceMatrix) {
+        this.distanceMatrix = distanceMatrix;
     }
 
     public boolean parse(File file) {
@@ -62,16 +68,15 @@ public class Parser {
         String[] parts = string_data.strip().split("( )+");
         if(type.equals("TSP") && parts.length == 3 * dimensions) {
             for (int i = 0; i < parts.length; i+=3) {
-                data.add(Arrays.asList(new Double[]{Double.parseDouble(parts[i+1]),Double.parseDouble(parts[i+2])}));
+                coordinates.add(new Coordinate(Double.parseDouble(parts[i+1]), Double.parseDouble(parts[i+2])));
             }
             return true;
         } else if (type.equals("ATSP") && parts.length == dimensions * dimensions) {
+            distanceMatrix = new double[dimensions][dimensions];
             for (int i = 0; i < dimensions; i++) {
-                List<Double> row = new ArrayList<>();
                 for(int j = 0; j < dimensions; j++) {
-                    row.add(Double.parseDouble(parts[i*dimensions+j]));
+                    distanceMatrix[i][j] = Double.parseDouble(parts[i*dimensions+j]);
                 }
-                data.add(row);
             }
             return true;
         } else {

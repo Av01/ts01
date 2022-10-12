@@ -6,23 +6,23 @@ import java.util.List;
 public class IRespositoryHandler implements RespositoryHandler {
     
     @Override
-    public List<List<Double>> fetchCoordinates() {
+    public List<Coordinate> fetchCoordinates() {
         return Repository.getInstance().getCoordinates();
     }
 
     @Override
-    public void updateCoordinates(List<List<Double>> coordinates) {
+    public void updateCoordinates(List<Coordinate> coordinates) {
         Repository.getInstance().setCoordinates(coordinates);
         
     }
 
     @Override
-    public List<List<Double>> fetchDistances() {
+    public double[][] fetchDistances() {
         return Repository.getInstance().getDistanceMatrix();
     }
 
     @Override
-    public void updateDistances(List<List<Double>> distances) {
+    public void updateDistances(double[][] distances) {
         Repository.getInstance().setDistanceMatrix(distances);
         
     }
@@ -46,17 +46,16 @@ public class IRespositoryHandler implements RespositoryHandler {
     public void calculateRest() {
         Repository repository = Repository.getInstance();
         if(!repository.isAsymmetric()) {
-            List<List<Double>> coordinates = repository.getCoordinates();
+            List<Coordinate> coordinates = repository.getCoordinates();
             int n = coordinates.size();
-            List<List<Double>> distanceMat = new ArrayList<>();
+            double[][] distanceMat = new double[n][n];
             for(int i = 0; i < n; i++) {
-                List<Double> row = new ArrayList<>();
-                for(int j = 0; j < n; j++) {
-                    double distance = find_distance(coordinates.get(i).get(0),coordinates.get(i).get(1),
-                    coordinates.get(j).get(0),coordinates.get(j).get(1));
-                    row.add(distance);
+                for(int j = i; j < n; j++) {
+                    double distance = find_distance(coordinates.get(i).x,coordinates.get(i).y,
+                    coordinates.get(j).x,coordinates.get(j).y);
+                    distanceMat[i][j] = distance;
+                    distanceMat[j][i] = distance;
                 }
-                distanceMat.add(row);
             }
             repository.setDistanceMatrix(distanceMat);
         }

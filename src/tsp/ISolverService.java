@@ -2,32 +2,23 @@ package tsp;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import data.IRespositoryHandler;
 import data.RespositoryHandler;
 
 public class ISolverService implements SolverService {
     RespositoryHandler handler;
 
-    public ISolverService() {
-        handler = new IRespositoryHandler();
+    public ISolverService(RespositoryHandler dataHandler) {
+        handler = dataHandler;
     }
 
     @Override
     public SolverOut solve() {
-        List<List<Double>> distanceList = handler.fetchDistances();
-        int dim = distanceList.size();
-        double distanceMat[][] = new double[dim][dim];
-        for (int i = 0; i < distanceMat.length; i++) {
-            for (int j = 0; j < distanceMat.length; j++) {
-                distanceMat[i][j] = distanceList.get(i).get(j);
-            }
-        }
+        double[][] distanceMat = handler.fetchDistances();
         SolverOut out = find_tsp(distanceMat);
-        for (Integer i : out.getOrder()) {
-            System.out.print(i + " -> ");
-        }
-        System.out.println("Total distance: " + out.getTotaldistance());
+        // for (Integer i : out.getOrder()) {
+        //     System.out.print(i + " -> ");
+        // }
+        // System.out.println("Total distance: " + out.getTotaldistance());
         return out;
     }
 

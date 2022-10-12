@@ -6,8 +6,8 @@ import java.util.List;
 public class Repository {
     private static Repository repository;
     private boolean isAsymmetric;
-    private List<List<Double>> coordinates; 
-    private List<List<Double>> distanceMatrix;
+    private List<Coordinate> coordinates; 
+    private double[][] distanceMatrix;
 
     public boolean isAsymmetric() {
         return isAsymmetric;
@@ -17,19 +17,19 @@ public class Repository {
         this.isAsymmetric = isAsymmetric;
     }
 
-    public List<List<Double>> getCoordinates() {
+    public List<Coordinate> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(List<List<Double>> coordinates) {
+    public void setCoordinates(List<Coordinate> coordinates) {
         this.coordinates = coordinates;
     }
 
-    public List<List<Double>> getDistanceMatrix() {
+    public double[][] getDistanceMatrix() {
         return distanceMatrix;
     }
 
-    public void setDistanceMatrix(List<List<Double>> distanceMatrix) {
+    public void setDistanceMatrix(double[][] distanceMatrix) {
         this.distanceMatrix = distanceMatrix;
     }
 

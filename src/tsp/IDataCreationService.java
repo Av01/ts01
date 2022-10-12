@@ -1,15 +1,16 @@
 package tsp;
 
 import java.io.File;
-import java.util.List;
-
-import data.IRespositoryHandler;
 import data.RespositoryHandler;
 
 public class IDataCreationService implements DataCreationService {
     FileValidator fileValidator;
     Parser parser;
-    RespositoryHandler handler = new IRespositoryHandler();
+    RespositoryHandler handler;
+
+    public IDataCreationService(RespositoryHandler dataHandler) {
+        this.handler = dataHandler;
+    }
 
     @Override
     public boolean populateDataFromFile(File file) {
@@ -23,19 +24,12 @@ public class IDataCreationService implements DataCreationService {
             isParsed = parser.parse(file);
             if (isParsed) {
                 isSuccess = true;
-                List<List<Double>> data = parser.getData();
-                for (List<Double> list : data) {
-                    for (Double it : list) {
-                        System.out.print(it + ",");
-                    }
-                    System.out.println();
-                }
                 handler.empty();
                 handler.updateIsAsymmetric(parser.isASymmetric);
                 if(!parser.isASymmetric) {
-                    handler.updateCoordinates(data);
+                    handler.updateCoordinates(parser.coordinates);
                 } else {
-                    handler.updateDistances(data);
+                    handler.updateDistances(parser.distanceMatrix);
                 }
                 handler.calculateRest();
             } else {
