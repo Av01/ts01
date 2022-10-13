@@ -31,15 +31,15 @@ public class RoutePlotterPanel extends JPanel{
     public void paint(Graphics g) {
         int width = this.getWidth();
         int height = this.getHeight();
-        int x = (int)(this.getX() + 0.01 * width);
-        int y = (int)(this.getY() + 0.01 * height);
+        int xPad = (int)(this.getX() + 0.01 * width);
+        int yPad = (int)(this.getY() + 0.01 * height);
         List<Coordinate> scaledCoordinates = Utils.scaleCoordinates(this.coordinates, (int)(width * 0.9), (int)(height * 0.9));
         Coordinate lastCoordinates = null;
         for (Coordinate coordinate : scaledCoordinates) {
-            g.drawOval((int)coordinate.x + x, (int)coordinate.y + y, 2, 2);
+            g.drawOval((int)coordinate.x + xPad, (int)coordinate.y + yPad, 2, 2);
             if(lastCoordinates != null) {
-                g.drawLine((int)lastCoordinates.x + x, (int)lastCoordinates.y + y
-                , (int)coordinate.x + x, (int)coordinate.y + y);
+                g.drawLine((int)lastCoordinates.x + xPad, (int)lastCoordinates.y + yPad
+                , (int)coordinate.x + xPad, (int)coordinate.y + yPad);
             }
             lastCoordinates = coordinate;
         }

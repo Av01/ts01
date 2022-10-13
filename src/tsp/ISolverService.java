@@ -15,13 +15,16 @@ public class ISolverService implements SolverService {
 
 
     private RespositoryHandler handler;
+    private DistanceMetric distanceMetric;
 
 
     /**
      * @param dataHandler Handler to communicate with Repository
+     * @param distanceMetric Distance metric to calculate distance
      */
-    public ISolverService(RespositoryHandler dataHandler) {
+    public ISolverService(RespositoryHandler dataHandler, DistanceMetric distanceMetric) {
         handler = dataHandler;
+        this.distanceMetric = distanceMetric;
     }
 
     @Override
@@ -90,7 +93,7 @@ public class ISolverService implements SolverService {
                 if(currInd != j) {
                     Coordinate curCoordinate = coordinates.get(currInd);
                     Coordinate nextCoordinate = coordinates.get(j);
-                    double distance = find_distance(curCoordinate, nextCoordinate);
+                    double distance = distanceMetric.findDistance(curCoordinate, nextCoordinate);
                     if(distance < nextDis && !order.contains(j)) {
                         nextDis = distance;
                         nextInd = j;
@@ -103,18 +106,10 @@ public class ISolverService implements SolverService {
                 currInd = nextInd;
             }
         }
-        totaldistance += find_distance(coordinates.get(currInd), coordinates.get(source));
+        totaldistance += distanceMetric.findDistance(coordinates.get(currInd), coordinates.get(source));
         order.add(source);
         return new SolverOut(order, totaldistance, !handler.fetchIsAsymmetric(), handler.fetchCoordinates());    
     }
 
-    /**
-     * Utility function for calculating Eulidian distance between to coordinates
-     * @param c1 First coordinate
-     * @param c2 Second coordinate
-     * @return Eulidian distance
-     */
-    private double find_distance(Coordinate c1, Coordinate c2) {
-        return Math.sqrt(Math.pow(c1.x-c2.x,2) + Math.pow(c1.y-c2.y, 2));
-    }
+
 }

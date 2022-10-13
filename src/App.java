@@ -4,6 +4,8 @@ import gui.Model;
 import gui.ReloadActionListener;
 import gui.UploadListener;
 import tsp.DataCreationService;
+import tsp.DistanceMetric;
+import tsp.EucidianDistanceMetric;
 import tsp.FileValidator;
 import tsp.IDataCreationService;
 import tsp.ISolverService;
@@ -33,11 +35,12 @@ public class App {
         FileValidator fileValidator = new FileValidator();
         Parser parser = new Parser();
         DataCreationService dataCreationService = new IDataCreationService(fileValidator, parser, dataHandler);
-        SolverService solverService = new ISolverService(dataHandler);
+        DistanceMetric distanceMetric = new EucidianDistanceMetric();
+        SolverService solverService = new ISolverService(dataHandler, distanceMetric);
         ActionListener resetListener = new ReloadActionListener(gui);
         ActionListener uploadListener = new UploadListener(gui, dataCreationService, solverService);
         gui.registerButtonListeners(resetListener, uploadListener);
     }
 
-    
+
 }
