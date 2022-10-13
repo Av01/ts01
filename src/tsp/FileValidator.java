@@ -6,16 +6,24 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+/**
+ * Validator to test syntax of File in TSPLIB format
+ * @author Aakash Vora
+ */
 public class FileValidator {
-    /*  NAME:  br17
-        TYPE: ATSP
-        COMMENT: 17 city problem (Repetto)
-        DIMENSION:  17
-        EDGE_WEIGHT_TYPE: EXPLICIT
-        EDGE_WEIGHT_FORMAT: FULL_MATRIX  */
-    String regex1 = "(EDGE_WEIGHT_SECTION)|(NODE_COORD_SECTION)|((NAME|TYPE|COMMENT|DIMENSION|EDGE_WEIGHT_TYPE|EDGE_WEIGHT_FORMAT)( )*:( )*(.)*)";
-    String regex2 = "((((\\-)?([0-9])+(\\.)?([0-9])*)|( )|(\t))+|EOF+)";
-    Pattern pattern = Pattern.compile(regex1 + "?|" + regex2 + "?");
+
+
+    private String regex1 = "(EDGE_WEIGHT_SECTION)|(NODE_COORD_SECTION)|((NAME|TYPE|COMMENT|DIMENSION|EDGE_WEIGHT_TYPE|EDGE_WEIGHT_FORMAT)( )*:( )*(.)*)";
+    private String regex2 = "((((\\-)?([0-9])+(\\.)?([0-9])*)|( )|(\t))+|EOF+)";
+    private Pattern pattern = Pattern.compile(regex1 + "?|" + regex2 + "?");
+
+
+    /**
+     * Validates the file
+     * @param file File to be validated
+     * @return Boolean representing success or failure
+     */
     public boolean validate(File file) {
         boolean isValid = false;
         try {
@@ -34,12 +42,5 @@ public class FileValidator {
         return isValid;
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        FileValidator validator = new FileValidator();
-        if (validator.validate(new File("/Users/avsmac/Downloads/asym_small.atsp"))) {
-            System.out.println("Valid");
-        } else {
-            System.out.println("Invalid");
-        }
-    }
+
 }

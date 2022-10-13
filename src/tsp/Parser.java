@@ -9,23 +9,28 @@ import java.util.regex.Pattern;
 
 import data.Coordinate;
 
+
+/**
+ * Parser to parse a File in TSPLIB format
+ * @author Aakash Vora
+ */
 public class Parser {
-    String typeField = "TYPE";
-    String dimensionField = "DIMENSION";
-    boolean isASymmetric; 
-    String type = "UNK";
-    int dimensions = 0;
-    List<Coordinate> coordinates = new ArrayList<>();
-    double [][] distanceMatrix;
 
-    public void setCoordinates(List<Coordinate> coordinates) {
-        this.coordinates = coordinates;
-    }
 
-    public void setDistanceMatrix(double[][] distanceMatrix) {
-        this.distanceMatrix = distanceMatrix;
-    }
+    private String typeField = "TYPE";
+    private String dimensionField = "DIMENSION";
+    private boolean isASymmetric; 
+    private String type = "UNK";
+    private int dimensions = 0;
+    private List<Coordinate> coordinates = new ArrayList<>();
+    private double [][] distanceMatrix;
 
+
+    /**
+     * Parses the file
+     * @param file File to be parsed
+     * @return Boolean representing success or failure
+     */
     public boolean parse(File file) {
         ArrayList<String> text = new ArrayList<>();
         boolean isParsed = false;
@@ -33,7 +38,6 @@ public class Parser {
             try (Scanner scanner = new Scanner(file, "UTF-8" )) {
                 while(scanner.hasNext()) {
                     String str = scanner.nextLine();
-                    text.add(str);
                     if(str.contains(":")) {
                         String[] parts = str.split(":");
                         if(typeField.equals(parts[0].strip())) {
@@ -45,16 +49,40 @@ public class Parser {
                             dimensions = Integer.parseInt(parts[1].strip());
                         }
                     }
-                }
-            }
-            if(!"UNK".equals(type) && dimensions > 0) {
-                String string_data = "";
-                for (String string : text) {
-                    if(Pattern.matches("(((\\-)?([0-9])+(\\.)?([0-9])*)|( )|(\t))+", string)) {
-                        string_data+= string + " "; //added space as delimeter
+                    else if (Pattern.matches("(((\\-)?([0-9])+(\\.)?([0-9])*)|( )|(\t))+", str)) {
+                        text.add(str);
                     }
                 }
-                isParsed = update_and_validate_data(string_data);
+            }
+            if("TSP".equals(type) && dimensions > 0) {
+                for (String string : text) {
+                    String[] parts = string.strip().split("( )+");
+                    if(parts.length != 3) {
+                        isParsed = false;
+                        break;
+                    } else {
+                        coordinates.add(new Coordinate(Double.parseDouble(parts[1]), Double.parseDouble(parts[2])));
+                    }
+                    isParsed = coordinates.size() == dimensions;
+                }
+            } else if ("ATSP".equals(type) && dimensions > 0) {
+                distanceMatrix = new double[dimensions][dimensions];
+                int i = 0;
+                int j = 0;
+                int count = 0;
+                for (String string : text) {
+                    String[] parts = string.strip().split("( )+");
+                    for(String str : parts) {
+                        distanceMatrix[i][j] = Double.parseDouble(str);
+                        j=((j+1)%dimensions);
+                        if(j == 0) i+=1;
+                        count++;
+                    }
+                }
+                isParsed = (count == dimensions * dimensions);
+
+            } else {
+                isParsed = false;
             }
             
         } catch (FileNotFoundException e) {
@@ -64,24 +92,16 @@ public class Parser {
         
     }
 
-    private boolean update_and_validate_data(String string_data) {
-        String[] parts = string_data.strip().split("( )+");
-        if(type.equals("TSP") && parts.length == 3 * dimensions) {
-            for (int i = 0; i < parts.length; i+=3) {
-                coordinates.add(new Coordinate(Double.parseDouble(parts[i+1]), Double.parseDouble(parts[i+2])));
-            }
-            return true;
-        } else if (type.equals("ATSP") && parts.length == dimensions * dimensions) {
-            distanceMatrix = new double[dimensions][dimensions];
-            for (int i = 0; i < dimensions; i++) {
-                for(int j = 0; j < dimensions; j++) {
-                    distanceMatrix[i][j] = Double.parseDouble(parts[i*dimensions+j]);
-                }
-            }
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isASymmetric() {
+        return isASymmetric;
+    }
+
+    public List<Coordinate> getCoordinates() {
+        return coordinates;
+    }
+
+    public double[][] getDistanceMatrix() {
+        return distanceMatrix;
     }
     
 }

@@ -4,7 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
+/**
+ * Coordinate class represents a POJO for storing (x,y) coordinates
+ * @author Aakash Vora
+ */
 public class DisplayPanel {
+
+
     JFrame frame;
     JPanel parentPanel;
     Model model;
@@ -19,6 +26,12 @@ public class DisplayPanel {
     JPanel panel2;
     RoutePlotterPanel panel3;
 
+
+    /**
+     * @param model Model containing the data to display
+     * @param width Width in px of the window
+     * @param height Height in px of the window
+     */
     public DisplayPanel(Model model,int width,int height) {
         this.model = model;
         frame = new JFrame();
@@ -60,6 +73,11 @@ public class DisplayPanel {
         updateModel(model);
     }
 
+
+    /**
+     * Take a new Model and refreshes the displayed data
+     * @param model Model containing data to display
+     */
     public void updateModel(Model model) {
         this.model = model;
         panel3.clear(parentPanel.getGraphics());
@@ -69,15 +87,24 @@ public class DisplayPanel {
         panel3.paint(parentPanel.getGraphics());
     }
 
+
+    /**
+     * @return Currently displayed model
+     */
     public Model getModel() {
         return this.model;
     }
 
+
+    /**
+     * Adds behaviour for button click
+     * @param resetListener Listener defining action for "Reset" button
+     * @param uploadListener Listener defining action for "Upload and Calculate" button
+     */
     public void registerButtonListeners(ActionListener resetListener, ActionListener uploadListener) {
         reset.addActionListener(resetListener);
         upload.addActionListener(uploadListener);
     }
-
 
     
 }

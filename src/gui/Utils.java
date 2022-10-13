@@ -5,7 +5,19 @@ import java.util.List;
 
 import data.Coordinate;
 
+
+/**
+ * Utils methods for various transformations on inputs
+ * @author Aakash Vora
+ */
 public class Utils {
+
+
+    /**
+     * Generates a String showing order of traversal
+     * @param orderList List containing traversal info
+     * @return String showing order of traversal
+     */
     public static String formatOrder(List<Integer> orderList) {
         String orderString = "";
         for (int i = 0; i < orderList.size(); i++) {
@@ -17,6 +29,13 @@ public class Utils {
         return orderString;
     }
 
+
+    /**
+     * Rearrange list according to the order
+     * @param coordinates List of coordinates
+     * @param order Order of coordinates
+     * @return Rearranged list of coordinates
+     */
     public static List<Coordinate> listCoordinateByOrder(List<Coordinate> coordinates, List<Integer> order) {
         List<Coordinate> rearrangedList = new ArrayList<>();
         for (Integer o : order) {
@@ -25,6 +44,14 @@ public class Utils {
         return rearrangedList;
     }
 
+
+    /**
+     * Scales the coordinates from one frame of reference to other one (starting from (0,0))
+     * @param coordinates Actual coordinates
+     * @param maxWidth Maximum width of new frame of reference
+     * @param maxHeight Maximum height of new frame of reference
+     * @return List of coordinates in new frame of reference
+     */
     public static List<Coordinate> scaleCoordinates(List<Coordinate> coordinates, int maxWidth, int maxHeight) {
         double maxX = Double.MIN_VALUE;
         double maxY = Double.MIN_VALUE;
@@ -45,8 +72,8 @@ public class Utils {
             Coordinate coordinate = coordinates.get(i);
             double x = coordinate.x;
             double y = coordinate.y;
-            if(minX < 0) x = x - minX;
-            if(minY < 0) y = y - minY;
+             x = x - minX;
+             y = y - minY;
             int new_x = (int) (maxWidth * x / xdiff);
             int new_y = (int) (maxHeight * y / ydiff);
             Coordinate xy = new Coordinate(new_x, new_y);
@@ -54,4 +81,6 @@ public class Utils {
         }
         return out;
     }
+
+    
 }

@@ -11,11 +11,24 @@ import tsp.DataCreationService;
 import tsp.SolverOut;
 import tsp.SolverService;
 
+
+/**
+ * Listener implementation for defining behaviour when "Upload And Calculate" button is clicked
+ * @author Aakash Vora
+ */
 public class UploadListener implements ActionListener{
+
+
     DisplayPanel panel;
     DataCreationService dataCreationService;
     SolverService solverService;
 
+
+    /**
+     * @param panel Display panel containing GUI definations
+     * @param dataCreationService Service for populating data in data store
+     * @param solverService Service for solving TSP problem
+     */
     public UploadListener(DisplayPanel panel, DataCreationService dataCreationService, SolverService solverService) {
         this.panel = panel;
         this.dataCreationService = dataCreationService;
@@ -43,8 +56,7 @@ public class UploadListener implements ActionListener{
             }
         } else {
             System.out.println("Open command cancelled by user.");
-        }
-        
+        }        
     }
     
 }
