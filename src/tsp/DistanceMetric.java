@@ -16,7 +16,7 @@ public interface DistanceMetric {
      * @param c2 Second coordinate
      * @return distance value
      */
-    double findDistance(Coordinate c1, Coordinate c2);
+    public double findDistance(Coordinate c1, Coordinate c2);
 
 
 }

@@ -39,6 +39,7 @@ public class UploadListener implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         panel.updateModel(new Model(Constants.START_DISTANCE, Constants.START_ORDER));
+        panel.disbleAction();
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showDialog(panel.parentPanel,"Select");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -56,7 +57,8 @@ public class UploadListener implements ActionListener{
             }
         } else {
             System.out.println("Open command cancelled by user.");
-        }        
+        }
+        panel.enableAction();        
     }
     
 }

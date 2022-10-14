@@ -21,7 +21,6 @@ public class DisplayPanel {
     JLabel orderLabel;
     JTextField distance;
     JLabel distanceLabel;
-    JFileChooser fc = new JFileChooser();
     JPanel panel1;
     JPanel panel2;
     RoutePlotterPanel panel3;
@@ -55,7 +54,7 @@ public class DisplayPanel {
         panel2.add(distance);
 
         orderLabel = new JLabel("Order of Traversal");
-        order = new JTextArea();
+        order = new JTextArea(model.totalDistance);
         JScrollPane scroll = new JScrollPane(order, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scroll.setPreferredSize(new Dimension(300,500));
         order.setLineWrap(true);
@@ -104,6 +103,24 @@ public class DisplayPanel {
     public void registerButtonListeners(ActionListener resetListener, ActionListener uploadListener) {
         reset.addActionListener(resetListener);
         upload.addActionListener(uploadListener);
+    }
+
+    
+    /**
+     * Disables all buttons
+     */
+    public void disbleAction() {
+        reset.setEnabled(false);
+        upload.setEnabled(false);
+    }
+
+
+    /**
+     * Enables all buttons
+     */
+    public void enableAction() {
+        reset.setEnabled(true);
+        upload.setEnabled(true);
     }
 
     
